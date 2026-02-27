@@ -124,7 +124,7 @@ const server = http.createServer(async (req, res) => {
 
       return respondJson(res, 200, {
         profile: users[key],
-        referralLink: `https://t.me/your_bot_username/app?startapp=${user.id}`,
+        referralLink: `https://t.me/iqfollowers_bot/app?startapp=${user.id}`,
         marketItems
       });
     } catch {
