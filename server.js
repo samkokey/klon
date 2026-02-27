@@ -108,6 +108,7 @@ const server = http.createServer(async (req, res) => {
         languageCode: user.language_code || '',
         isPremium: Boolean(user.is_premium),
         allowsWriteToPm: Boolean(user.allows_write_to_pm),
+        photoUrl: user.photo_url || '',
         updatedAt: now
       };
 
@@ -124,7 +125,7 @@ const server = http.createServer(async (req, res) => {
 
       return respondJson(res, 200, {
         profile: users[key],
-        referralLink: `https://t.me/iqfollowers_bot/app?startapp=${user.id}`,
+        referralLink: `https://t.me/iqfollowers_bot?startapp=${user.id}`,
         marketItems
       });
     } catch {

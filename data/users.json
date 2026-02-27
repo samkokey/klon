@@ -1,16 +1,1 @@
-{
-  "100100": {
-    "telegramId": 100100,
-    "points": 0,
-    "referrals": [],
-    "referredBy": null,
-    "createdAt": "2026-02-27T19:05:07.642Z",
-    "username": "demo_user",
-    "firstName": "Demo",
-    "lastName": "User",
-    "languageCode": "tr",
-    "isPremium": false,
-    "allowsWriteToPm": false,
-    "updatedAt": "2026-02-27T19:05:07.642Z"
-  }
-}
+{}

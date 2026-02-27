@@ -6,13 +6,13 @@ if (tg) {
 
 const tabs = document.querySelectorAll('.tab');
 const panels = {
-  profile: document.getElementById('profilePanel'),
   referral: document.getElementById('referralPanel'),
   market: document.getElementById('marketPanel')
 };
 
-const userDump = document.getElementById('userDump');
 const pointValue = document.getElementById('pointValue');
+const userName = document.getElementById('userName');
+const userAvatar = document.getElementById('userAvatar');
 const referralLinkInput = document.getElementById('referralLink');
 const copyReferralBtn = document.getElementById('copyReferral');
 const copyStatus = document.getElementById('copyStatus');
@@ -31,25 +31,46 @@ for (const tab of tabs) {
   });
 }
 
+function setUserHeader(user) {
+  const uname = user.username ? `@${user.username}` : `${user.first_name || ''} ${user.last_name || ''}`.trim();
+  userName.textContent = uname || 'Telegram Kullanıcısı';
+
+  if (user.photo_url) {
+    userAvatar.src = user.photo_url;
+    return;
+  }
+
+  const fallbackSvg = encodeURIComponent(`
+    <svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'>
+      <defs>
+        <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+          <stop offset='0%' stop-color='#6ea8fe'/>
+          <stop offset='100%' stop-color='#6ee7b7'/>
+        </linearGradient>
+      </defs>
+      <rect width='100' height='100' fill='url(#g)'/>
+      <text x='50' y='58' font-size='34' text-anchor='middle' fill='#0b1a35' font-family='Arial'>${(uname || 'TG').slice(1, 2).toUpperCase()}</text>
+    </svg>
+  `);
+  userAvatar.src = `data:image/svg+xml;charset=UTF-8,${fallbackSvg}`;
+}
+
 function renderMarket() {
   marketGrid.innerHTML = '';
-
   for (const item of marketItems) {
+    const enough = (profile?.points || 0) >= item.points;
     const card = document.createElement('article');
     card.className = 'market-item';
-    const enough = (profile?.points || 0) >= item.points;
-
     card.innerHTML = `
       <h3>${item.name}</h3>
       <p>${item.description}</p>
       <div class="row">
         <strong>${item.points} puan</strong>
-        <button ${enough ? '' : 'disabled'} data-item="${item.id}">${enough ? 'Sipariş Ver' : 'Puan Yetersiz'}</button>
+        <button ${enough ? '' : 'disabled'}>${enough ? 'Sipariş Ver' : 'Puan Yetersiz'}</button>
       </div>
     `;
 
-    const orderButton = card.querySelector('button');
-    orderButton.addEventListener('click', () => createOrder(item.id));
+    card.querySelector('button').addEventListener('click', () => createOrder(item.id));
     marketGrid.appendChild(card);
   }
 }
@@ -63,7 +84,6 @@ async function createOrder(itemId) {
   });
 
   const result = await response.json();
-
   if (!response.ok) {
     orderStatus.textContent = `Hata: ${result.error}`;
     return;
@@ -86,6 +106,7 @@ async function bootstrap() {
 
   const user = tg?.initDataUnsafe?.user || fallbackUser;
   const startParam = tg?.initDataUnsafe?.start_param || null;
+  setUserHeader(user);
 
   const response = await fetch('/api/launch', {
     method: 'POST',
@@ -94,9 +115,8 @@ async function bootstrap() {
   });
 
   const data = await response.json();
-
   if (!response.ok) {
-    userDump.textContent = `Hata: ${data.error}`;
+    orderStatus.textContent = `Hata: ${data.error}`;
     return;
   }
 
@@ -105,7 +125,6 @@ async function bootstrap() {
 
   pointValue.textContent = profile.points;
   referralLinkInput.value = data.referralLink;
-  userDump.textContent = JSON.stringify(profile, null, 2);
   renderMarket();
 }
 

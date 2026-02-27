@@ -3,38 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Market Mini App</title>
+    <title>IQ Followers Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app-shell">
-      <header class="hero">
-        <div>
-          <p class="badge">FreeInstFollower</p>
-          <h1>Coin Market</h1>
-          <p class="subtitle">Referans paylaş, puan topla, marketten istediğin istemleri sipariş et.</p>
+      <header class="top-card">
+        <div class="brand">@iqfollowers_bot</div>
+        <div class="user-area">
+          <img id="userAvatar" class="avatar" alt="Kullanıcı resmi" />
+          <div>
+            <p class="label">Hoş geldin</p>
+            <h1 id="userName">@kullanici</h1>
+          </div>
         </div>
-        <div class="points-card">
-          <span>Puan</span>
+        <div class="points-pill">
+          <span>Toplam Puan</span>
           <strong id="pointValue">0</strong>
         </div>
       </header>
 
       <section class="tabs">
-        <button class="tab active" data-tab="profile">Profil</button>
-        <button class="tab" data-tab="referral">Referans</button>
+        <button class="tab active" data-tab="referral">Referans</button>
         <button class="tab" data-tab="market">Market</button>
       </section>
 
-      <section class="panel active" id="profilePanel">
-        <h2>Başlatan Kullanıcı Bilgisi</h2>
-        <pre id="userDump">Yükleniyor...</pre>
-      </section>
-
-      <section class="panel" id="referralPanel">
-        <h2>Referans Sistemi</h2>
-        <p>Her davet edilen kullanıcı için <strong>50 puan</strong> kazanırsın.</p>
+      <section class="panel active" id="referralPanel">
+        <h2>Referans ile Kazan</h2>
+        <p class="muted">Her yeni davet için <strong>50 puan</strong> kazanırsın.</p>
         <div class="ref-box">
           <input id="referralLink" readonly />
           <button id="copyReferral">Kopyala</button>
