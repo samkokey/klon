@@ -1,0 +1,10 @@
+{
+  "name": "telegram-miniapp-market",
+  "version": "1.0.0",
+  "description": "Telegram Mini App referral points and prompt market",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Market Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="badge">Telegram Mini App</p>
+          <h1>Prompt Market</h1>
+          <p class="subtitle">Referans paylaş, puan topla, marketten istediğin istemleri sipariş et.</p>
+        </div>
+        <div class="points-card">
+          <span>Puan</span>
+          <strong id="pointValue">0</strong>
+        </div>
+      </header>
+
+      <section class="tabs">
+        <button class="tab active" data-tab="profile">Profil</button>
+        <button class="tab" data-tab="referral">Referans</button>
+        <button class="tab" data-tab="market">Market</button>
+      </section>
+
+      <section class="panel active" id="profilePanel">
+        <h2>Başlatan Kullanıcı Bilgisi</h2>
+        <pre id="userDump">Yükleniyor...</pre>
+      </section>
+
+      <section class="panel" id="referralPanel">
+        <h2>Referans Sistemi</h2>
+        <p>Her davet edilen kullanıcı için <strong>50 puan</strong> kazanırsın.</p>
+        <div class="ref-box">
+          <input id="referralLink" readonly />
+          <button id="copyReferral">Kopyala</button>
+        </div>
+        <p id="copyStatus" class="muted"></p>
+      </section>
+
+      <section class="panel" id="marketPanel">
+        <h2>İstem Marketi</h2>
+        <div id="marketGrid" class="market-grid"></div>
+        <p id="orderStatus" class="muted"></p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
