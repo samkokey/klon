@@ -33,8 +33,9 @@ function respondJson(res, status, payload) {
 }
 
 function serveStatic(req, res) {
-  const requestPath = req.url === '/' ? '/index.html' : req.url;
-  const filePath = path.join(publicDir, decodeURIComponent(requestPath));
+  const { pathname } = new URL(req.url, 'http://localhost');
+  const normalizedPath = pathname === '/' || pathname === '/app' || pathname === '/app/' ? '/index.html' : pathname;
+  const filePath = path.join(publicDir, decodeURIComponent(normalizedPath));
 
   if (!filePath.startsWith(publicDir)) {
     res.writeHead(403);
@@ -79,11 +80,13 @@ function parseBody(req) {
 }
 
 const server = http.createServer(async (req, res) => {
-  if (req.method === 'GET' && req.url === '/api/market-items') {
+  const { pathname } = new URL(req.url, 'http://localhost');
+
+  if (req.method === 'GET' && pathname === '/api/market-items') {
     return respondJson(res, 200, marketItems);
   }
 
-  if (req.method === 'POST' && req.url === '/api/launch') {
+  if (req.method === 'POST' && pathname === '/api/launch') {
     try {
       const { user, startParam } = await parseBody(req);
       if (!user || !user.id) return respondJson(res, 400, { error: 'Geçerli kullanıcı bilgisi gönderilmedi.' });
@@ -125,7 +128,7 @@ const server = http.createServer(async (req, res) => {
 
       return respondJson(res, 200, {
         profile: users[key],
-        referralLink: `https://t.me/iqfollowers_bot?startapp=${user.id}`,
+        referralLink: `https://t.me/iqfollowers_bot/app?startapp=${user.id}`,
         marketItems
       });
     } catch {
@@ -133,7 +136,7 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  if (req.method === 'POST' && req.url === '/api/order') {
+  if (req.method === 'POST' && pathname === '/api/order') {
     try {
       const { telegramId, itemId } = await parseBody(req);
       if (!telegramId || !itemId) return respondJson(res, 400, { error: 'Eksik sipariş verisi.' });
